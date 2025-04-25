@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QUANTA - Decentralized Mining System</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #00ffe7;
+      text-align: center;
+    }
+    .section {
+      background: #1a1a1a;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      max-width: 600px;
+      box-shadow: 0 0 10px #00ffe7;
+    }
+    button, input {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+      width: 100%;
+      background: #00ffe7;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .address {
+      word-wrap: break-word;
+      background: #111;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a {
+      color: #00ffe7;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>  <h1>QUANTA - Decentralized Mining System</h1>  <div class="section">
+    <h2>1. Create Wallet</h2>
+    <button onclick="generateWallet()">Generate Wallet</button>
+    <p><b>Public Address:</b></p>
+    <div class="address" id="publicKey"></div>
+    <p><b>Private Key:</b></p>
+    <div class="address" id="privateKey"></div>
+  </div>  <div class="section">
+    <h2>2. Connect Razorpay Payment</h2>
+    <p><a href="https://razorpay.me/@swiftcart1383" target="_blank">Pay 1 INR to Buy 1 Quanta</a></p>
+    <small>After payment, 1 Quanta will be credited manually.</small>
+  </div>  <div class="section">
+    <h2>3. Mine Quanta (Difficulty ×100 BTC)</h2>
+    <button onclick="mineQuanta()">Start Mining</button>
+    <p id="mineStatus">Waiting to start mining...</p>
+  </div>  <div class="section">
+    <h2>4. Send / Receive Quanta</h2>
+    <input type="text" id="sendTo" placeholder="Recipient Address" />
+    <button onclick="sendQuanta()">Send 1 Quanta</button>
+    <p id="sendStatus"></p>
+  </div>  <div class="section">
+    <h2>5. Blockchain Explorer</h2>
+    <div id="explorer"></div>
+  </div>  <script>
+    let wallet = {}, blockchain = [];
+
+    function generateWallet() {
+      wallet.publicKey = 'QUANTA' + Math.random().toString(36).substring(2, 12);
+      wallet.privateKey = Math.random().toString(36).substring(2) + Date.now();
+      document.getElementById("publicKey").innerText = wallet.publicKey;
+      document.getElementById("privateKey").innerText = wallet.privateKey;
+    }
+
+    function mineQuanta() {
+      document.getElementById("mineStatus").innerText = "Mining started...";
+      setTimeout(() => {
+        const block = {
+          miner: wallet.publicKey,
+          reward: "1 Quanta",
+          time: new Date().toLocaleString()
+        };
+        blockchain.push(block);
+        document.getElementById("mineStatus").innerText = "Mining successful! 1 Quanta added.";
+        updateExplorer();
+      }, 5000);
+    }
+
+    function sendQuanta() {
+      const recipient = document.getElementById("sendTo").value;
+      if (!recipient) {
+        document.getElementById("sendStatus").innerText = "Please enter a recipient address.";
+        return;
+      }
+      document.getElementById("sendStatus").innerText = `1 Quanta sent to ${recipient}.`;
+    }
+
+    function updateExplorer() {
+      let html = "";
+      blockchain.forEach((block, i) => {
+        html += `<p><b>Block #${i+1}</b><br/>Miner: ${block.miner}<br/>Reward: ${block.reward}<br/>Time: ${block.time}</p><hr>`;
+      });
+      document.getElementById("explorer").innerHTML = html;
+    }
+  </script></body>
+</html>
